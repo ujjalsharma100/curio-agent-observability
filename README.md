@@ -2,7 +2,11 @@
 
 A standalone observability dashboard for monitoring and debugging your Curio Agent SDK runs. View agent executions, LLM calls, token usage, latencies, and more.
 
-> **Note**: This is a separate tool from the Curio Agent SDK. Install the SDK separately to use it with your agents.
+**Repository**: [https://github.com/ujjalsharma100/curio-agent-observability](https://github.com/ujjalsharma100/curio-agent-observability)
+
+> **Note**: This is a separate tool from the Curio Agent SDK. Install the SDK separately to use it with your agents. See the [Curio Agent SDK repository](https://github.com/ujjalsharma100/curio-agent-sdk) for the main SDK.
+
+![Dashboard Overview](screenshots/Screenshot%202026-01-02%20at%201.52.38%20PM.png)
 
 ## Features
 
@@ -33,11 +37,12 @@ pip install curio-agent-sdk
 
 #### Option B: Install from Source
 
-If you have the SDK source code in the same repository:
+Install the SDK from the GitHub repository:
 
 ```bash
-# Navigate to SDK directory
-cd ../curio_agent_sdk
+# Clone the SDK repository
+git clone https://github.com/ujjalsharma100/curio-agent-sdk.git
+cd curio-agent-sdk
 
 # Install in development mode
 pip install -e .
@@ -48,7 +53,7 @@ pip install .
 
 #### Option C: Install from Local Path
 
-If the SDK is in a different location:
+If you have the SDK source code locally:
 
 ```bash
 pip install /path/to/curio_agent_sdk
