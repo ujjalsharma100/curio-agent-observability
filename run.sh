@@ -26,7 +26,7 @@ fi
 
 # Default ports
 BACKEND_PORT=${OBSERVABILITY_PORT:-5050}
-FRONTEND_PORT=3000
+FRONTEND_PORT=${OBSERVABILITY_FRONTEND_PORT:-3001}
 
 # Function to check if a port is in use
 check_port() {
@@ -100,7 +100,7 @@ fi
 # Start frontend
 echo -e "${YELLOW}Starting frontend on port $FRONTEND_PORT...${NC}"
 cd "$SCRIPT_DIR/frontend"
-npm start &
+PORT=$FRONTEND_PORT npm start &
 FRONTEND_PID=$!
 
 echo ""

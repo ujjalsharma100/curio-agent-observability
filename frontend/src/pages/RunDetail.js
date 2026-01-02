@@ -3,8 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
   ArrowLeft, CheckCircle, AlertCircle, Clock, Play, MessageSquare,
-  Repeat, ChevronDown, ChevronRight, Zap, FileText, Code
+  Repeat, ChevronDown, ChevronRight, Zap, FileText, Code, Hash, Copy
 } from 'lucide-react';
+import JsonViewer from '../components/JsonViewer';
 
 function RunDetail() {
   const { runId } = useParams();
@@ -14,6 +15,13 @@ function RunDetail() {
   const [activeTab, setActiveTab] = useState('timeline');
   const [expandedEvents, setExpandedEvents] = useState({});
   const [selectedLLMCall, setSelectedLLMCall] = useState(null);
+  const [copiedId, setCopiedId] = useState(null);
+
+  const copyToClipboard = (text, id) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
 
   useEffect(() => {
     Promise.all([
@@ -91,8 +99,84 @@ function RunDetail() {
       </div>
 
       <div className="detail-header">
-        <div>
+        <div style={{ width: '100%' }}>
           <h1 className="detail-title">{run.agent_name || 'Agent Run'}</h1>
+
+          {/* IDs Section */}
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 12,
+            marginBottom: 16,
+            padding: '12px 16px',
+            background: 'var(--bg-hover)',
+            borderRadius: 8
+          }}>
+            {/* Run ID */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>RUN ID:</span>
+              <code style={{ fontSize: 12, color: 'var(--accent-blue)' }}>{run.run_id}</code>
+              <button
+                onClick={() => copyToClipboard(run.run_id, 'run_id')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 4,
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: copiedId === 'run_id' ? 'var(--accent-green)' : 'var(--text-muted)'
+                }}
+                title="Copy Run ID"
+              >
+                <Copy size={12} />
+              </button>
+            </div>
+
+            <div style={{ borderLeft: '1px solid var(--border-color)', height: 20 }} />
+
+            {/* Agent ID */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>AGENT ID:</span>
+              <Link
+                to={`/agents?agent_id=${run.agent_id}`}
+                style={{ fontSize: 12, color: 'var(--accent-purple)', fontFamily: 'monospace' }}
+                title="View agent details"
+              >
+                {run.agent_id}
+              </Link>
+              <button
+                onClick={() => copyToClipboard(run.agent_id, 'agent_id')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 4,
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: copiedId === 'agent_id' ? 'var(--accent-green)' : 'var(--text-muted)'
+                }}
+                title="Copy Agent ID"
+              >
+                <Copy size={12} />
+              </button>
+              <Link
+                to={`/runs?agent_id=${run.agent_id}`}
+                className="btn btn-ghost"
+                style={{ padding: '2px 8px', fontSize: 10 }}
+              >
+                All runs
+              </Link>
+              <Link
+                to={`/llm-calls?agent_id=${run.agent_id}`}
+                className="btn btn-ghost"
+                style={{ padding: '2px 8px', fontSize: 10 }}
+              >
+                All LLM calls
+              </Link>
+            </div>
+          </div>
+
           <div className="detail-meta">
             <div className="detail-meta-item">
               {run.status === 'completed' ? (
@@ -192,8 +276,13 @@ function RunDetail() {
                             {expandedEvents[idx] ? 'Hide' : 'Show'} data
                           </button>
                           {expandedEvents[idx] && (
-                            <div className="code-block" style={{ marginTop: 8, fontSize: 12 }}>
-                              <pre>{JSON.stringify(item.data, null, 2)}</pre>
+                            <div style={{ marginTop: 8 }}>
+                              <JsonViewer
+                                data={item.data}
+                                maxHeight={300}
+                                maxInitialDepth={3}
+                                showExpandAll={false}
+                              />
                             </div>
                           )}
                         </div>
@@ -290,8 +379,13 @@ function RunDetail() {
                         View data
                       </button>
                       {expandedEvents[`event-${idx}`] && (
-                        <div className="code-block" style={{ marginTop: 8, fontSize: 11 }}>
-                          <pre>{JSON.stringify(event.data || {}, null, 2)}</pre>
+                        <div style={{ marginTop: 8 }}>
+                          <JsonViewer
+                            data={event.data || {}}
+                            maxHeight={250}
+                            maxInitialDepth={3}
+                            showExpandAll={false}
+                          />
                         </div>
                       )}
                     </td>
@@ -306,9 +400,13 @@ function RunDetail() {
       {/* Execution History Tab */}
       {activeTab === 'history' && (
         <div className="card">
-          <div className="code-block" style={{ maxHeight: 600, overflow: 'auto' }}>
-            <pre>{JSON.stringify(run.execution_history || [], null, 2)}</pre>
-          </div>
+          <JsonViewer
+            data={run.execution_history || []}
+            title="Execution History"
+            maxHeight={600}
+            maxInitialDepth={3}
+            showSearch={true}
+          />
         </div>
       )}
 

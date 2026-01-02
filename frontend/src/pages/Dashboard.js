@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { Play, MessageSquare, AlertCircle, CheckCircle, Clock, ArrowRight } from 'lucide-react';
+import { Play, MessageSquare, AlertCircle, CheckCircle, Clock, ArrowRight, ExternalLink, Hash } from 'lucide-react';
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -110,6 +110,7 @@ function Dashboard() {
               <table>
                 <thead>
                   <tr>
+                    <th>Run ID</th>
                     <th>Agent</th>
                     <th>Status</th>
                     <th>Time</th>
@@ -117,23 +118,39 @@ function Dashboard() {
                 </thead>
                 <tbody>
                   {recentRuns.map(run => (
-                    <tr key={run.run_id} className="clickable-row" onClick={() => window.location.href = `/runs/${run.run_id}`}>
+                    <tr key={run.run_id} className="clickable-row">
                       <td>
-                        <div style={{ fontWeight: 500 }}>{run.agent_name || 'Unknown'}</div>
-                        <div style={{ fontSize: 12, color: 'var(--text-muted)' }} className="truncate">
-                          {run.objective?.slice(0, 40)}...
-                        </div>
+                        <Link
+                          to={`/runs/${run.run_id}`}
+                          className="mono"
+                          style={{ fontSize: 10, color: 'var(--accent-blue)', display: 'flex', alignItems: 'center', gap: 4 }}
+                          title={run.run_id}
+                        >
+                          <ExternalLink size={10} />
+                          {run.run_id?.slice(0, 8)}...
+                        </Link>
+                      </td>
+                      <td>
+                        <Link
+                          to={`/agents?agent_id=${run.agent_id}`}
+                          style={{ display: 'block' }}
+                        >
+                          <div style={{ fontWeight: 500, fontSize: 13 }}>{run.agent_name || 'Unknown'}</div>
+                          <div className="mono" style={{ fontSize: 10, color: 'var(--accent-purple)' }} title={run.agent_id}>
+                            {run.agent_id?.slice(0, 12)}...
+                          </div>
+                        </Link>
                       </td>
                       <td>
                         {run.status === 'completed' ? (
-                          <span className="badge badge-success"><CheckCircle size={12} /> Done</span>
+                          <span className="badge badge-success"><CheckCircle size={12} /></span>
                         ) : run.status === 'error' ? (
-                          <span className="badge badge-error"><AlertCircle size={12} /> Error</span>
+                          <span className="badge badge-error"><AlertCircle size={12} /></span>
                         ) : (
-                          <span className="badge badge-warning"><Clock size={12} /> {run.status}</span>
+                          <span className="badge badge-warning"><Clock size={12} /></span>
                         )}
                       </td>
-                      <td style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+                      <td style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                         {formatTime(run.started_at)}
                       </td>
                     </tr>
@@ -167,6 +184,7 @@ function Dashboard() {
               <table>
                 <thead>
                   <tr>
+                    <th>Run ID</th>
                     <th>Model</th>
                     <th>Tokens</th>
                     <th>Latency</th>
@@ -174,15 +192,32 @@ function Dashboard() {
                 </thead>
                 <tbody>
                   {recentLLMCalls.map(call => (
-                    <tr key={call.id} className="clickable-row" onClick={() => window.location.href = `/llm-calls/${call.id}`}>
+                    <tr key={call.id} className="clickable-row">
                       <td>
-                        <span className="badge badge-info" style={{ marginRight: 8 }}>{call.provider}</span>
-                        <span className="mono" style={{ fontSize: 13 }}>{call.model}</span>
+                        {call.run_id ? (
+                          <Link
+                            to={`/runs/${call.run_id}`}
+                            className="mono"
+                            style={{ fontSize: 10, color: 'var(--accent-blue)', display: 'flex', alignItems: 'center', gap: 4 }}
+                            title={call.run_id}
+                          >
+                            <ExternalLink size={10} />
+                            {call.run_id?.slice(0, 8)}...
+                          </Link>
+                        ) : (
+                          <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>-</span>
+                        )}
                       </td>
-                      <td style={{ fontSize: 13 }}>
+                      <td>
+                        <Link to={`/llm-calls/${call.id}`} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span className="badge badge-info" style={{ fontSize: 10 }}>{call.provider}</span>
+                          <span className="mono" style={{ fontSize: 11 }}>{call.model}</span>
+                        </Link>
+                      </td>
+                      <td style={{ fontSize: 12 }}>
                         {((call.input_tokens || 0) + (call.output_tokens || 0)).toLocaleString()}
                       </td>
-                      <td style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+                      <td style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                         {call.latency_ms?.toLocaleString() || '-'}ms
                       </td>
                     </tr>

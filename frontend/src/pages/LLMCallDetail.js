@@ -5,6 +5,7 @@ import {
   ArrowLeft, CheckCircle, AlertCircle, Clock, Copy, Check,
   MessageSquare, Zap, FileText
 } from 'lucide-react';
+import JsonViewer from '../components/JsonViewer';
 
 function LLMCallDetail() {
   const { callId } = useParams();
@@ -214,21 +215,27 @@ function LLMCallDetail() {
 
       {/* Input Parameters */}
       {call.input_params && (
-        <div className="card" style={{ marginTop: 20 }}>
-          <div className="card-title" style={{ marginBottom: 12 }}>Input Parameters</div>
-          <div className="code-block">
-            <pre>{typeof call.input_params === 'string' ? call.input_params : JSON.stringify(call.input_params, null, 2)}</pre>
-          </div>
+        <div style={{ marginTop: 20 }}>
+          <JsonViewer
+            data={call.input_params}
+            title="Input Parameters"
+            maxHeight={400}
+            maxInitialDepth={3}
+            showSearch={true}
+          />
         </div>
       )}
 
       {/* Usage Metrics */}
       {call.usage_metrics && (
-        <div className="card" style={{ marginTop: 20 }}>
-          <div className="card-title" style={{ marginBottom: 12 }}>Usage Metrics</div>
-          <div className="code-block">
-            <pre>{typeof call.usage_metrics === 'string' ? call.usage_metrics : JSON.stringify(call.usage_metrics, null, 2)}</pre>
-          </div>
+        <div style={{ marginTop: 20 }}>
+          <JsonViewer
+            data={call.usage_metrics}
+            title="Usage Metrics"
+            maxHeight={400}
+            maxInitialDepth={3}
+            showSearch={true}
+          />
         </div>
       )}
 

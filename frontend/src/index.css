@@ -662,3 +662,117 @@ tr:hover td {
 .json-number {
   color: var(--accent-cyan);
 }
+
+/* JSON Viewer Component */
+.json-viewer {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.json-viewer:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.json-viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+  border-bottom: 1px solid var(--border-color);
+  min-height: 44px;
+}
+
+.json-viewer-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.json-viewer-title::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: var(--accent-blue);
+  border-radius: 2px;
+}
+
+.json-viewer-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.json-viewer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.2);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.json-viewer-btn:hover {
+  background: rgba(88, 166, 255, 0.2);
+  color: var(--accent-blue);
+  border-color: rgba(88, 166, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.json-viewer-content {
+  padding: 16px 20px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  overflow: auto;
+  background: var(--bg-primary);
+  position: relative;
+}
+
+.json-viewer-content::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, 
+    var(--accent-blue) 0%, 
+    var(--accent-purple) 50%, 
+    var(--accent-cyan) 100%);
+  opacity: 0.3;
+}
+
+.json-viewer-content::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.json-viewer-content::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-radius: 5px;
+}
+
+.json-viewer-content::-webkit-scrollbar-thumb {
+  background: var(--bg-hover);
+  border-radius: 5px;
+  border: 2px solid var(--bg-primary);
+}
+
+.json-viewer-content::-webkit-scrollbar-thumb:hover {
+  background: var(--border-color);
+}

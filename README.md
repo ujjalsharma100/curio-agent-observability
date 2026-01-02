@@ -102,7 +102,7 @@ The script will:
 - Install backend Python dependencies
 - Install frontend Node.js dependencies
 - Start the Flask backend (port 5050)
-- Start the React frontend (port 3000)
+- Start the React frontend (port 3001 by default, configurable via `OBSERVABILITY_FRONTEND_PORT`)
 
 #### Option 2: Manual Setup
 
@@ -134,14 +134,14 @@ npm install
 **4. Start the Frontend**
 
 ```bash
-npm start
+PORT=3001 npm start
 ```
 
-The frontend will start on port 3000.
+The frontend will start on port 3001 (or the port specified by the `PORT` environment variable).
 
 **5. Open the Dashboard**
 
-Navigate to `http://localhost:3000` in your browser.
+Navigate to `http://localhost:3001` in your browser.
 
 ## Environment Variables
 
@@ -151,6 +151,7 @@ Navigate to `http://localhost:3000` in your browser.
 |----------|-------------|---------|
 | `OBSERVABILITY_PORT` | Backend API port | `5050` |
 | `OBSERVABILITY_DEBUG` | Enable debug mode | `true` |
+| `OBSERVABILITY_FRONTEND_PORT` | Frontend React app port | `3001` |
 
 ### Database Configuration
 
