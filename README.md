@@ -2,7 +2,6 @@
 
 A standalone observability dashboard for monitoring and debugging your Curio Agent SDK runs. View agent executions, LLM calls, token usage, latencies, and more.
 
-**Repository**: [https://github.com/ujjalsharma100/curio-agent-observability](https://github.com/ujjalsharma100/curio-agent-observability)
 
 > **Note**: This is a separate tool from the Curio Agent SDK. Install the SDK separately to use it with your agents. See the [Curio Agent SDK repository](https://github.com/ujjalsharma100/curio-agent-sdk) for the main SDK.
 
