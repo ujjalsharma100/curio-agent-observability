@@ -6,7 +6,7 @@ A standalone observability dashboard for monitoring and debugging your Curio Age
 
 > **Note**: This is a separate tool from the Curio Agent SDK. Install the SDK separately to use it with your agents. See the [Curio Agent SDK repository](https://github.com/ujjalsharma100/curio-agent-sdk) for the main SDK.
 
-![Dashboard Overview](screenshots/Screenshot%202026-01-02%20at%201.52.38%20PM.png)
+![Dashboard Overview](./screenshots/Screenshot%202026-01-02%20at%201.52.38%E2%80%AFPM.png)
 
 ## Features
 
