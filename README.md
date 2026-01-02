@@ -354,4 +354,4 @@ This should print the path to the SDK installation. If it errors, the SDK is not
 
 ## License
 
-Part of the Curio Agent SDK project.
+Apache License 2.0 - See [LICENSE](LICENSE) for details.
